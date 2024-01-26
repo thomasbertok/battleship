@@ -1,7 +1,47 @@
+.boardWrapper {
+  position: relative;
+  z-index: 1;
+}
+
 .board {
   display: grid;
   aspect-ratio: 1 / 1;
   max-height: 90vh;
   grid-template-columns: repeat(10, 1fr);
   box-shadow: 0 10px 40px 10px var(--theme-900);
+}
+
+.top,
+.leftSide {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--theme-500);
+  z-index: 2;
+  display: flex;
+}
+
+.top {
+  width: 100%;
+  top: -2.5rem;
+}
+
+.top > div {
+  flex: 1;
+  text-align: center;
+  height: 2rem;
+}
+
+.leftSide {
+  top: 0;
+  left: -2.5rem;
+  flex-direction: column;
+  height: 100%;
+}
+
+.leftSide > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

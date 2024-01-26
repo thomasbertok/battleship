@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useAppStore } from "../../store";
 import styles from "./CoordsInput.module.css";
 
 const CoordsInput = () => {
-  const [value, setValue] = useState("");
+  const [playerInput, setPlayerInput] = useAppStore((state) => [state.playerInput, state.setPlayerInput]);
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setPlayerInput(event.target.value);
   };
 
   return (
@@ -21,7 +21,7 @@ const CoordsInput = () => {
         id="coords"
         onChange={handleChange}
         placeholder="Ex. A1"
-        value={value}
+        value={playerInput}
       />
     </div>
   );
