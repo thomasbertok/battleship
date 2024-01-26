@@ -1,0 +1,7 @@
+.board {
+  display: grid;
+  aspect-ratio: 1 / 1;
+  max-height: 90vh;
+  grid-template-columns: repeat(10, 1fr);
+  box-shadow: 0 10px 40px 10px var(--theme-900);
+}

@@ -1,0 +1,26 @@
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.input {
+  min-width: 0;
+  width: 15rem;
+  font-size: 1.5rem;
+
+  border: 1px solid var(--theme-900);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--theme-200);
+  color: var(--theme-900);
+}
+
+::placeholder {
+  color: var(--theme-400);
+}

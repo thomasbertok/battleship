@@ -1,0 +1,40 @@
+:root {
+  --cellSize: clamp(2rem, 8vw, 4rem);
+  --cellEmptyColor: SteelBlue;
+  --cellShipColor: DimGray;
+  --cellHitColor: FireBrick;
+  --cellMissColor: DarkBlue;
+
+  --theme-50: rgb(250 250 249);
+  --theme-100: rgb(245 245 244);
+  --theme-200: rgb(231 229 228);
+  --theme-300: rgb(214 211 209);
+  --theme-400: rgb(168 162 158);
+  --theme-500: rgb(120 113 108);
+  --theme-600: rgb(87 83 78);
+  --theme-700: rgb(68 64 60);
+  --theme-800: rgb(41 37 36);
+  --theme-900: rgb(28 25 23);
+  --theme-950: rgb(12 10 9);
+}
+
+html {
+  width: 100%;
+  height: 100svh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 1rem;
+  color: var(--theme-200);
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: var(--theme-800);
+}
+
+/* * {
+  box-shadow: inset 0 0 0 1px #000;
+} */

@@ -1,0 +1,32 @@
+.cell {
+  width: var(--cellSize);
+  height: var(--cellSize);
+  border: 1px solid var(--theme-400);
+  background-color: var(--theme-50);
+  color: var(--theme-400);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+.cell:hover {
+  background-color: #f0f0f0;
+}
+
+.clicked {
+  box-shadow: inset 0 0 0 10px var(--theme-900);
+}
+
+.stateEmpty {
+  background-color: var(--cellEmptyColor);
+}
+.stateShip {
+  background-color: var(--cellShipColor);
+}
+.stateHit {
+  background-color: var(--cellHitColor);
+}
+.stateMiss {
+  background-color: var(--cellMissColor);
+}
