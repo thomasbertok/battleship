@@ -1,9 +1,10 @@
 .cell {
   width: var(--cellSize);
   height: var(--cellSize);
-  border: 1px solid var(--theme-400);
+  border: 1px solid var(--theme-900);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: var(--theme-50);
-  color: var(--theme-400);
+  color: var(--theme-300);
   align-items: center;
   justify-content: center;
   display: flex;
@@ -11,22 +12,29 @@
   font-size: 0.75rem;
 }
 .cell:hover {
-  background-color: #f0f0f0;
+  background-color: var(--theme-900);
 }
 
 .clicked {
-  box-shadow: inset 0 0 0 10px var(--theme-900);
+  /* box-shadow: inset 0 0 10px 2px var(--theme-100); */
 }
 
-.stateEmpty {
+/* water */
+.state0 {
   background-color: var(--cellEmptyColor);
 }
-.stateShip {
+
+/* missed hit */
+.state1 {
+  background-color: var(--cellMissColor);
+}
+
+/* ship */
+.state2 {
   background-color: var(--cellShipColor);
 }
-.stateHit {
+
+/* ship hit */
+.state3 {
   background-color: var(--cellHitColor);
-}
-.stateMiss {
-  background-color: var(--cellMissColor);
 }

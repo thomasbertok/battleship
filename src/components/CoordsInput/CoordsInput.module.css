@@ -9,18 +9,42 @@
   font-weight: 500;
 }
 
+.formBlock {
+  background-color: var(--theme-100);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--theme-900);
+}
+
 .input {
   min-width: 0;
   width: 15rem;
   font-size: 1.5rem;
-
-  border: 1px solid var(--theme-900);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  background-color: var(--theme-200);
+  border: none;
+  background-color: transparent;
   color: var(--theme-900);
+  outline: none;
+}
+
+.button {
+  font-size: 1.5rem;
+  border: none;
+  background-color: var(--theme-200);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: var(--theme-800);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.button:hover {
+  background-color: var(--theme-400);
 }
 
 ::placeholder {
-  color: var(--theme-400);
+  color: var(--theme-300);
 }

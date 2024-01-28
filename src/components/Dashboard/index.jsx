@@ -1,7 +1,7 @@
-import styles from "./Dashboard.module.css";
 import Board from "../Board";
 import Stats from "../Stats";
 import CoordsInput from "../CoordsInput";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
   return (
