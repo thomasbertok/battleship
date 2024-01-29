@@ -21,6 +21,9 @@ export const useAppStore = create((set) => ({
   // coordinates input
   playerInput: "",
 
+  // won
+  playerWins: false,
+
   // setters
 
   // update player input
@@ -38,12 +41,16 @@ export const useAppStore = create((set) => ({
   // update ships remaining
   setShipsRemaining: (shipsRemaining) => set({ shipsRemaining: shipsRemaining }),
 
+  // update player wins
+  setPlayerWins: (playerWins) => set({ playerWins: playerWins }),
+
   // init board
   initBoard: (board) =>
     set({
       board: board,
       hitCount: 0,
       successfulHits: 0,
+      totalShips: 3,
       shipsRemaining: 3,
       playerInput: "",
     }),
@@ -55,6 +62,7 @@ export const useAppStore = create((set) => ({
   setBoardCell: (x, y, value) => {
     set((state) => ({
       board: state.board.map((row, i) => (i === x ? row.map((cell, j) => (j === y ? value : cell)) : row)),
+      successfulHits: value === 3 ? state.successfulHits + 1 : state.successfulHits,
     }));
   },
 

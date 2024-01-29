@@ -3,7 +3,7 @@ import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Cell.module.css";
 
-const Cell = ({ x, y }) => {
+const Cell = ({ col, row, onClick }) => {
   const [board, setBoardCell, incrementHitCount] = useAppStore(
     useShallow((state) => [state.board, state.setBoardCell, state.incrementHitCount])
   );
@@ -43,16 +43,18 @@ const Cell = ({ x, y }) => {
       // increment hit count
       incrementHitCount();
       // set board cell state in store
-      setBoardCell(x, y, getCellValue(x, y) + 1);
+      // setBoardCell(col, row, getCellValue(col, row) + 1);
+      // call onClick
+      onClick(col, row, getCellValue(col, row) + 1);
     }
   };
 
   return (
     <div
-      className={`${styles.cell} ${getCellStateClass(x, y)} ${clickedState ? styles.clicked : ""}`}
+      className={`${styles.cell} ${getCellStateClass(col, row)} ${clickedState ? styles.clicked : ""}`}
       onClick={handleClick}
-      title={`${x}, ${y}`}>
-      {x + 1},{y + 1}
+      title={`${col}, ${row}`}>
+      {col + 1},{row + 1}
     </div>
   );
 };
