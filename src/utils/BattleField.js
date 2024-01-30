@@ -1,28 +1,52 @@
+const CELL_WATER = 0;
+const CELL_MISSED = 1;
+const CELL_SHIP = 2;
+const CELL_HIT = 3;
+
+/**
+ * Ship class with coords
+ * and sunk status
+ */
 class Ship {
   constructor(coords) {
     this.coords = coords;
-    console.log("ship created", this.coords);
+    console.log("> New ship added:", coords);
   }
 
-  setHit(col, row) {
+  // set value to hit if ship is hit
+  setHit(row, col) {
     this.coords.forEach((coord) => {
-      if (coord[0] === col && coord[1] === row) {
-        coord[2] = 3;
+      if (coord[0] === row && coord[1] === col) {
+        coord[2] = CELL_HIT;
       }
     });
   }
 
-  isShip(col, row) {
-    return this.coords.some((coord) => coord[0] === col && coord[1] === row);
+  // check if coords are on ship
+  isShip(row, col) {
+    return this.coords.some((coord) => coord[0] === row && coord[1] === col);
   }
 
+  // check if ship is sunk
   isSunk() {
-    return this.coords.every((coord) => coord[2] === 3);
+    return this.coords.every((coord) => coord[2] === CELL_HIT);
   }
 }
 
 /**
  * Battlefield
+ * creates a 2d array of width x height
+ * with state codes 0 1 2 3
+ *
+ * fleet - array of ships objects
+ *
+ * createField        - creates 2d array
+ * addShip            - adds ship
+ * isValidPlacement   - checks if ship placement is valid
+ * isFLeetSunk        - checks if all ships are sunk
+ * getShipsRemaining  - returns number of ships not sunk
+ * updateFieldCell    - updates field cell with new state
+ *
  * @param {number} width
  * @param {number} height
  * @returns {BattleField}
@@ -31,11 +55,11 @@ class Ship {
 class BattleField {
   constructor(width, height) {
     // width and height
-    this.cols = width;
     this.rows = height;
+    this.cols = width;
 
     // battlefield array with state codes 0 1 2 3
-    this.field = [];
+    this.ocean = [];
     // array of ships (objects with coords and sunk status)
     this.fleet = [];
 
@@ -49,30 +73,35 @@ class BattleField {
   }
 
   createField() {
-    console.log(">>> Creating battlefield...");
-    this.field = Array.from({ length: this.cols }, () => Array(this.rows).fill(0));
+    console.log("> Creating battlefield...");
+    this.ocean = Array.from({ length: this.cols }, () => Array(this.rows).fill(CELL_WATER));
+  }
+
+  // ship placement validity checker
+  isValidPlacement(row, col, isVertical, len) {
+    console.log(
+      `>> Checking validity for: [${row + 1},${col + 1}], ${isVertical ? "vertical" : "horizontal"}, length: ${len}`
+    );
+    if (isVertical) {
+      let sum = 0;
+      // vertical
+      // check if cells are empty
+      for (let i = 0; i < len; i++) {
+        //console.log("***", row + i + 1, col + 1, this.ocean[row + i][col], "***");
+        sum += this.ocean[row + i][col];
+      }
+
+      return sum === 0;
+    } else {
+      // horizontal, we're in a single subarray
+      // check if cells are empty
+      return this.ocean[row].slice(col, col + len).reduce((a, b) => a + b, 0) === 0;
+    }
   }
 
   // add a ship to the field/fleet
   addShip(len) {
-    // placement validity checker
-    const isValidPlacement = (col, row, isVertical, len) => {
-      if (isVertical) {
-        let sum = 0;
-        // vertical
-        // check if cells are empty
-        for (let i = 0; i < len; i++) {
-          sum += this.field[row + i][col];
-        }
-        return sum === 0;
-      } else {
-        // horizontal, we're in a single subarray
-        // check if cells are empty
-        return this.field[row].slice(col, col + len).reduce((a, b) => a + b, 0) === 0;
-      }
-    };
-
-    console.log(">>> Adding ship...");
+    console.log("> Adding ship...");
 
     // initialize ship properties
     let col = -1;
@@ -80,45 +109,54 @@ class BattleField {
     let isVertical = false;
     let tries = 0;
 
+    let isValid = false;
+
     // try creating new choords for the ship
     // until a valid position is found
-    // where there is no collision with another ship ([x,y] != 0)
+    // where there is no collision with another ship
     do {
       // decide orientation
       isVertical = Math.random() > 0.5;
 
       // create random starting coords
+      // where the whole ship can be placed top-bottom, left-right
       if (isVertical) {
-        col = Math.floor(Math.random() * this.cols);
         row = Math.floor(Math.random() * (this.rows - len));
+        col = Math.floor(Math.random() * this.cols);
       } else {
-        col = Math.floor(Math.random() * (this.cols - len));
         row = Math.floor(Math.random() * this.rows);
+        col = Math.floor(Math.random() * (this.cols - len));
       }
 
-      // console.log(`>>> roundtripts to find valid coord ${++tries}.`);
+      isValid = this.isValidPlacement(row, col, isVertical, len);
+      tries++;
+
+      !isValid && console.log(`!! Invalid placement: [${row + 1}, ${col + 1}] after try nr.${tries}`);
       // console.log(`col: ${col}, row: ${row}, isVertical: ${isVertical}, len: ${len}`);
-    } while (!isValidPlacement(col, row, isVertical, len));
+    } while (!isValid && tries < 100);
 
     // if we're good to add the new ship
-    if (col !== -1 || row !== -1) {
+    if (isValid) {
+      console.log(`>> Coords OK: [${row + 1}, ${col + 1}]`);
       // init coordinates of the new ship
       let shipCoords = [];
       // add ship pieces to field
       // and gather ship coordinates
       for (let i = 0; i < len; i++) {
         if (isVertical) {
-          this.field[col][row + i] = 2;
-          shipCoords.push([col, row + i, 2]);
+          this.ocean[row + i][col] = CELL_SHIP;
+          shipCoords.push([row + i, col, CELL_SHIP]);
         } else {
-          this.field[col + i][row] = 2;
-          shipCoords.push([col + i, row, 2]);
+          this.ocean[row][col + i] = CELL_SHIP;
+          shipCoords.push([row, col + i, CELL_SHIP]);
         }
       }
       // create new ship object
       const newShip = new Ship(shipCoords);
       // add ship object to fleet
       this.fleet.push(newShip);
+    } else {
+      console.log(`! Only invalid coords found. Tried ${tries} times.`);
     }
   }
 
@@ -136,14 +174,14 @@ class BattleField {
   }
 
   // update battlefield cell
-  updateFieldCell(col, row, value) {
-    this.field[col][row] = value;
+  updateFieldCell(row, col, value) {
+    this.ocean[row][col] = value;
 
-    if (value === 3) {
+    if (value === CELL_HIT) {
       this.fleet.forEach((ship) => {
-        if (ship.isShip(col, row)) {
+        if (ship.isShip(row, col)) {
           console.log("-- OH SHIP! --");
-          ship.setHit(col, row);
+          ship.setHit(row, col);
           if (ship.isSunk()) {
             console.log("-- SHIP SUNK! --");
           }

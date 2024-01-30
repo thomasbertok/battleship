@@ -3,13 +3,13 @@ import Stats from "../Stats";
 import CoordsInput from "../CoordsInput";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
-import styles from "./Dashboard.module.css";
 import BattleField from "../../utils/BattleField";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const battleField = new BattleField(10, 10);
-
   const [playerWins] = useAppStore(useShallow((state) => [state.playerWins]));
+  // create battlefield
+  const battleField = new BattleField(10, 10);
 
   const handleClickRestart = () => {
     window.location.reload();

@@ -24,6 +24,9 @@ export const useAppStore = create((set) => ({
   // won
   playerWins: false,
 
+  // show ships
+  showShips: true,
+
   // setters
 
   // update player input
@@ -69,4 +72,7 @@ export const useAppStore = create((set) => ({
   allShipsDestroyed: () => {
     return shipsRemaining === 0;
   },
+
+  // toggle show ships
+  toggleShowShips: () => set((state) => ({ showShips: !state.showShips })),
 }));
