@@ -4,15 +4,7 @@ import Cell from "../Cell";
 import style from "./Board.module.css";
 
 const Board = ({ battleField }) => {
-  const [board, setBoardCell, setShipsRemaining, setPlayerWins, incrementHitCount] = useAppStore(
-    useShallow((state) => [
-      state.board,
-      state.setBoardCell,
-      state.setShipsRemaining,
-      state.setPlayerWins,
-      state.incrementHitCount,
-    ])
-  );
+  const [board, setBoardCell] = useAppStore(useShallow((state) => [state.board, state.setBoardCell]));
 
   const { rows, cols } = battleField;
 
@@ -41,29 +33,15 @@ const Board = ({ battleField }) => {
     );
   };
 
-  const applyHit = (row, col, val) => {
-    // update board cell
-    setBoardCell(row, col, val);
-    // update battlefield state
-    battleField.updateFieldCell(row, col, val);
-    // update shipsRemaining
-    setShipsRemaining(battleField.getShipsRemaining());
-    // check if all ships are sunk
-    if (battleField.isFleetSunk()) {
-      setPlayerWins(true);
-    }
-  };
-
   /**
    * handle board cell click event
-   *
    */
   const handleCellClick = (row, col, val) => {
-    applyHit(row, col, val);
+    setBoardCell(row, col, val);
   };
 
   return (
-    <>
+    <div className={style.boardContainer}>
       {board[9] !== undefined && (
         <div className={`${style.boardWrapper}`}>
           <div className={style.top}>{renderLegendHorizontal(cols)}</div>
@@ -71,7 +49,8 @@ const Board = ({ battleField }) => {
           <div className={style.leftSide}>{renderLegendVertical(rows)}</div>
         </div>
       )}
-    </>
+      <div className={style.message}></div>
+    </div>
   );
 };
 

@@ -3,11 +3,12 @@ import { create } from "zustand";
 export const useAppStore = create((set) => ({
   // battlefiled state
   // 2 dimensional array of state codes
-  // 0 = empty
-  // 1 = ship
-  // 2 = hit
-  // 3 = miss
   board: [],
+
+  // array of ship opbjects from battlefield
+  fleet: [],
+
+  //field: null,
 
   // how many hits player has made
   hitCount: 0,
@@ -16,7 +17,7 @@ export const useAppStore = create((set) => ({
   successfulHits: 0,
 
   // how many ships player has left to destroooy
-  shipsRemaining: 3,
+  shipsRemaining: 0,
 
   // coordinates input
   playerInput: "",
@@ -27,43 +28,35 @@ export const useAppStore = create((set) => ({
   // show ships
   showShips: true,
 
-  // setters
-
+  // methods
   // update player input
   setPlayerInput: (input) => set({ playerInput: input }),
-
   // update hit count
   setHitCount: (hitCount) => set({ hitCount: hitCount }),
-
   // incerement hit count
   incrementHitCount: () => set((state) => ({ hitCount: state.hitCount + 1 })),
-
   // update successful hits
-  setSuccessfulHits: (successfulHits) => set({ successfulHits: successfulHits }),
-
+  // setSuccessfulHits: (successfulHits) => set({ successfulHits: successfulHits }),
   // update ships remaining
   setShipsRemaining: (shipsRemaining) => set({ shipsRemaining: shipsRemaining }),
-
   // update player wins
   setPlayerWins: (playerWins) => set({ playerWins: playerWins }),
 
   // init board
-  initBoard: (board) =>
+  initBoard: (battlefield) =>
     set({
-      board: board,
+      //field: battlefield,
+      fleet: battlefield.fleet,
+      board: battlefield.ocean,
       hitCount: 0,
       successfulHits: 0,
-      totalShips: 3,
-      shipsRemaining: 3,
+      totalShips: battlefield.fleet.length,
+      shipsRemaining: battlefield.fleet.length,
       playerInput: "",
     }),
 
   // set board
-  setBoard: (newBoard) => set({ board: newBoard }),
-
-  getBoardCell: (x, y) => {
-    return get().board[x][y];
-  },
+  // setBoard: (newBoard) => set({ board: newBoard }),
 
   // update board cell
   setBoardCell: (x, y, value) => {
@@ -73,6 +66,24 @@ export const useAppStore = create((set) => ({
       hitCount: state.hitCount + 1,
       // increment hit count if value is 3
       successfulHits: value === 3 ? state.successfulHits + 1 : state.successfulHits,
+      // update fleet
+      fleet: state.fleet.map((ship) => {
+        if (ship.isShip(x, y)) {
+          console.log("-- OH SHIP! --");
+          ship.setHit(x, y);
+          if (ship.isSunk()) {
+            ship.setSunk();
+            console.log("-- SHIP SUNK! --");
+          }
+        } else {
+          console.log("-- MISS! --");
+        }
+        return ship;
+      }),
+      // count ships not sunk
+      shipsRemaining: state.fleet.reduce((acc, ship) => acc + (ship.isSunk() ? 0 : 1), 0),
+      // player wins if all ships sunk
+      playerWins: state.totalShips === state.fleet.reduce((acc, ship) => acc + (ship.isSunk() ? 1 : 0), 0),
     }));
   },
 

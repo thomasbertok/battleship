@@ -4,16 +4,18 @@
   border: 1px solid var(--theme-900);
   border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: var(--theme-50);
-  color: var(--theme-300);
+  color: var(--theme-400);
   align-items: center;
   justify-content: center;
   display: flex;
   cursor: pointer;
-  font-size: 0.75rem;
-  transition: background-color 0.125s ease-in-out;
+  font-size: 0.7rem;
+  font-family: sans-serif;
+  transition: all 0.25s ease-in-out;
 }
 .cell:not(.state1):not(.state2):not(.state3):hover {
   background-color: var(--theme-800);
+  color: var(--theme-200);
   z-index: 100;
 }
 
@@ -38,6 +40,7 @@
 /* ship hit */
 .state3 {
   background-color: var(--cellHitColor);
+  color: var(--theme-200);
 }
 
 /* ship sunk */

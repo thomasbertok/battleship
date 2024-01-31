@@ -7,14 +7,12 @@ import BattleField from "../../utils/BattleField";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const [playerWins, initBoard, setBattleField] = useAppStore(
-    useShallow((state) => [state.playerWins, state.initBoard, state.setBattleField])
-  );
+  const [playerWins, initBoard] = useAppStore(useShallow((state) => [state.playerWins, state.initBoard]));
   // create battlefield
   const battleField = new BattleField(10, 10);
 
   // init state board with battlefield data
-  initBoard(battleField.ocean);
+  initBoard(battleField);
 
   const handleClickRestart = () => {
     window.location.reload();

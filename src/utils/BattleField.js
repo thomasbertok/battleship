@@ -11,7 +11,7 @@ class Ship {
   constructor(coords) {
     this.sunkenShip = false;
     this.coords = coords;
-    console.log("> New ship added:", coords);
+    console.log("--- New ship added:", coords);
   }
 
   // set value to hit if ship is hit
@@ -73,38 +73,38 @@ class BattleField {
     this.fleet = [];
 
     // initialize field
-    this.createField();
+    this.createOcean();
 
     // add ships
     this.addShip(5);
     this.addShip(4);
     this.addShip(4);
+    // this.addShip(3);
 
-    console.log("> Battlefield created.");
+    console.log("> Battlefield ready <");
     console.log(this.ocean);
   }
 
   // create 2d array filling it with 0s
   // helps working with frontend board
-  createField() {
-    console.log("> Creating battlefield...");
+  createOcean() {
+    console.log("> Creating ocean...");
     this.ocean = Array.from({ length: this.cols }, () => Array(this.rows).fill(CELL_WATER));
   }
 
   // ship placement validity checker
   isValidPlacement(row, col, isVertical, len) {
     console.log(
-      `>> Checking validity for: [${row + 1},${col + 1}], ${isVertical ? "vertical" : "horizontal"}, length: ${len}`
+      `--- Checking validity for: [${row + 1},${col + 1}], ${isVertical ? "vertical" : "horizontal"}, length: ${len}`
     );
+    // sum of desired places should be 0
     if (isVertical) {
       let sum = 0;
       // vertical
-      // check if cells are empty
       for (let i = 0; i < len; i++) {
         //console.log("***", row + i + 1, col + 1, this.ocean[row + i][col], "***");
         sum += this.ocean[row + i][col];
       }
-
       return sum === 0;
     } else {
       // horizontal, we're in a single subarray
@@ -115,7 +115,7 @@ class BattleField {
 
   // add a ship to the field/fleet
   addShip(len) {
-    console.log("> Adding ship...");
+    console.log(`> Adding ship (${len})...`);
 
     // initialize ship properties
     let col = -1;
@@ -144,13 +144,13 @@ class BattleField {
       isValid = this.isValidPlacement(row, col, isVertical, len);
       tries++;
 
-      !isValid && console.log(`!! Invalid placement: [${row + 1}, ${col + 1}] after try nr.${tries}`);
+      !isValid && console.log(`!!! Not OK: [${row + 1}, ${col + 1}]  ${tries}. try`);
       // console.log(`col: ${col}, row: ${row}, isVertical: ${isVertical}, len: ${len}`);
     } while (!isValid && tries < 100);
 
     // if we're good to add the new ship
     if (isValid) {
-      console.log(`>> Coords OK: [${row + 1}, ${col + 1}]`);
+      console.log(`--- Coords OK: [${row + 1}, ${col + 1}]`);
 
       // init coordinates of the new ship
       let shipCoords = [];
@@ -178,33 +178,33 @@ class BattleField {
   }
 
   // check if all ships are sunk
-  isFleetSunk() {
-    return this.fleet.every((ship) => ship.isSunk());
-  }
+  // isFleetSunk() {
+  //   return this.fleet.every((ship) => ship.isSunk());
+  // }
 
-  getSunkenShips() {
-    return this.fleet.filter((ship) => ship.isSunk());
-  }
+  // getSunkenShips() {
+  //   return this.fleet.filter((ship) => ship.isSunk());
+  // }
 
-  getShipsRemaining() {
-    return this.fleet.length - this.fleet.filter((ship) => ship.isSunk()).length;
-  }
+  // getShipsRemaining() {
+  //   return this.fleet.length - this.fleet.filter((ship) => ship.isSunk()).length;
+  // }
 
   // update battlefield cell
-  updateFieldCell(row, col, value) {
-    this.ocean[row][col] = value;
-    if (value === CELL_HIT) {
-      this.fleet.forEach((ship) => {
-        if (ship.isShip(row, col)) {
-          console.log("-- OH SHIP! --");
-          ship.setHit(row, col);
-          if (ship.isSunk()) {
-            console.log("-- SHIP SUNK! --");
-          }
-        }
-      });
-    }
-  }
+  // updateFieldCell(row, col, value) {
+  //   this.ocean[row][col] = value;
+  //   if (value === CELL_HIT) {
+  //     this.fleet.forEach((ship) => {
+  //       if (ship.isShip(row, col)) {
+  //         console.log("-- OH SHIP! --");
+  //         ship.setHit(row, col);
+  //         if (ship.isSunk()) {
+  //           console.log("-- SHIP SUNK! --");
+  //         }
+  //       }
+  //     });
+  //   }
+  // }
 }
 
 export default BattleField;

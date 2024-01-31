@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Cell.module.css";
@@ -36,7 +36,7 @@ const Cell = ({ row, col, onClick }) => {
     } else if (!clickedState) {
       // set clicked state to true
       setClickedState(true);
-      // call parent's onClick
+      // call parent's onClick with the proper value for the cell
       onClick(row, col, board[row][col] + 1);
     }
   };
@@ -45,7 +45,8 @@ const Cell = ({ row, col, onClick }) => {
     <div
       className={`${styles.cell} ${cellStateClass(row, col)} ${clickedState ? styles.clicked : ""}`}
       onClick={handleClick}>
-      {row + 1},{col + 1}
+      {String.fromCharCode(col + 65)}
+      {row + 1}
     </div>
   );
 };
