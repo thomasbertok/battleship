@@ -1,73 +1,48 @@
-import { useEffect } from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import Cell from "../Cell";
 import style from "./Board.module.css";
 
 const Board = ({ battleField }) => {
-  const [board, initBoard, setBoardCell, setShipsRemaining, setPlayerWins] = useAppStore(
+  const [board, setBoardCell, setShipsRemaining, setPlayerWins, incrementHitCount] = useAppStore(
     useShallow((state) => [
       state.board,
-      state.initBoard,
       state.setBoardCell,
       state.setShipsRemaining,
       state.setPlayerWins,
+      state.incrementHitCount,
     ])
   );
 
-  const { cols, rows, ocean } = battleField;
-
-  /**
-   * on load
-   * init board
-   */
-  useEffect(() => {
-    // init state with battelfield board
-    initBoard(ocean);
-  }, []);
+  const { rows, cols } = battleField;
 
   /**
    * letters on the top of the table
    */
-  const renderLegendTop = () => {
-    const legendTop = [];
-    for (let i = 0; i < cols; i++) {
-      legendTop.push(<div key={i}>{String.fromCharCode(i + 65)}</div>);
-    }
-    return legendTop;
+  const renderLegendHorizontal = () => {
+    return Array.from({ length: cols }, (_, idx) => <div key={idx}>{String.fromCharCode(idx + 65)}</div>);
   };
 
   /**
    * numbers on the left side of the table
    */
-  const renderLegendLeft = () => {
-    const legendLeft = [];
-    for (let i = 0; i < rows; i++) {
-      legendLeft.push(<div key={i}>{i + 1}</div>);
-    }
-    return legendLeft;
+  const renderLegendVertical = (rows) => {
+    return Array.from({ length: rows }, (_, idx) => <div key={idx}>{idx + 1}</div>);
   };
 
   /**
-   * render all the width x height cells
+   * render cells
    */
   const renderCells = () => {
-    const cells = [];
-    let index = 0;
-    for (let row = 0; row < rows; row++) {
-      for (let column = 0; column < cols; column++) {
-        cells.push(<Cell key={index++} row={row} col={column} onClick={handleCellClick} />);
-      }
-    }
-    return cells;
+    return Array.from({ length: rows }, (_, row) =>
+      Array.from({ length: cols }, (_, col) => (
+        <Cell key={row * cols + col} row={row} col={col} onClick={handleCellClick} />
+      ))
+    );
   };
 
-  /**
-   * handle board cell click event
-   *
-   */
-  const handleCellClick = (row, col, val) => {
-    // update board state
+  const applyHit = (row, col, val) => {
+    // update board cell
     setBoardCell(row, col, val);
     // update battlefield state
     battleField.updateFieldCell(row, col, val);
@@ -79,13 +54,21 @@ const Board = ({ battleField }) => {
     }
   };
 
+  /**
+   * handle board cell click event
+   *
+   */
+  const handleCellClick = (row, col, val) => {
+    applyHit(row, col, val);
+  };
+
   return (
     <>
       {board[9] !== undefined && (
         <div className={`${style.boardWrapper}`}>
-          <div className={style.top}>{renderLegendTop()}</div>
+          <div className={style.top}>{renderLegendHorizontal(cols)}</div>
           <div className={style.board}>{renderCells()}</div>
-          <div className={style.leftSide}>{renderLegendLeft()}</div>
+          <div className={style.leftSide}>{renderLegendVertical(rows)}</div>
         </div>
       )}
     </>

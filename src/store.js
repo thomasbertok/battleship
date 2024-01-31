@@ -30,7 +30,7 @@ export const useAppStore = create((set) => ({
   // setters
 
   // update player input
-  setPlayerInput: (playerInput) => set({ playerInput: playerInput }),
+  setPlayerInput: (input) => set({ playerInput: input }),
 
   // update hit count
   setHitCount: (hitCount) => set({ hitCount: hitCount }),
@@ -61,10 +61,17 @@ export const useAppStore = create((set) => ({
   // set board
   setBoard: (newBoard) => set({ board: newBoard }),
 
+  getBoardCell: (x, y) => {
+    return get().board[x][y];
+  },
+
   // update board cell
   setBoardCell: (x, y, value) => {
     set((state) => ({
+      // update board cells in (x,y) to value
       board: state.board.map((row, i) => (i === x ? row.map((cell, j) => (j === y ? value : cell)) : row)),
+      hitCount: state.hitCount + 1,
+      // increment hit count if value is 3
       successfulHits: value === 3 ? state.successfulHits + 1 : state.successfulHits,
     }));
   },

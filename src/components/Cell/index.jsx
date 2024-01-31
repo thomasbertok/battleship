@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Cell.module.css";
 
-const Cell = ({ col, row, onClick }) => {
-  const [board, incrementHitCount, showShips] = useAppStore(
-    useShallow((state) => [state.board, state.incrementHitCount, state.showShips])
-  );
+const Cell = ({ row, col, onClick }) => {
+  const [board, showShips] = useAppStore(useShallow((state) => [state.board, state.showShips]));
   // set clicked state for the cell
   const [clickedState, setClickedState] = useState(false);
 
-  // get state of cell in board array
-  const getCellValue = (row, col) => {
-    // get cell value
-    const cellValue = board[row][col];
-    return cellValue;
-  };
-
   // choose class by cell state
-  const getCellStateClass = (x, y) => {
-    switch (getCellValue(x, y)) {
+  const cellStateClass = (x, y) => {
+    switch (board[x][y]) {
       case 0: // water
         return styles.state0;
       case 1: // missed hit
@@ -30,6 +21,8 @@ const Cell = ({ col, row, onClick }) => {
         return styles.state3;
       case 4: // ship sunk
         return styles.state4;
+      case 5: // player input
+        return styles.state5;
       default:
         return styles.state0;
     }
@@ -37,27 +30,21 @@ const Cell = ({ col, row, onClick }) => {
 
   // click cell
   const handleClick = () => {
-    if (clickedState) {
-      // already clicked it
+    if (board[row][col] === 1 || board[row][col] === 3) {
       console.log("You already clicked this cell");
-      return;
-    } else {
+      setClickedState(true);
+    } else if (!clickedState) {
       // set clicked state to true
       setClickedState(true);
-      // increment hit count
-      incrementHitCount();
-      // set board cell state in store
-      // setBoardCell(col, row, getCellValue(col, row) + 1);
-      // call onClick
-      onClick(row, col, getCellValue(row, col) + 1);
+      // call parent's onClick
+      onClick(row, col, board[row][col] + 1);
     }
   };
 
   return (
     <div
-      className={`${styles.cell} ${getCellStateClass(row, col)} ${clickedState ? styles.clicked : ""}`}
-      onClick={handleClick}
-      title={`${row}, ${col}`}>
+      className={`${styles.cell} ${cellStateClass(row, col)} ${clickedState ? styles.clicked : ""}`}
+      onClick={handleClick}>
       {row + 1},{col + 1}
     </div>
   );

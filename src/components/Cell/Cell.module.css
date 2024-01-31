@@ -10,13 +10,14 @@
   display: flex;
   cursor: pointer;
   font-size: 0.75rem;
+  transition: background-color 0.125s ease-in-out;
 }
-.cell:hover {
-  background-color: var(--theme-900);
+.cell:not(.state1):not(.state2):not(.state3):hover {
+  background-color: var(--theme-800);
+  z-index: 100;
 }
 
 .clicked {
-  /* box-shadow: inset 0 0 10px 2px var(--theme-100); */
 }
 
 /* water */
@@ -37,4 +38,14 @@
 /* ship hit */
 .state3 {
   background-color: var(--cellHitColor);
+}
+
+/* ship sunk */
+.state4 {
+  background-color: var(--cellShipSunkColor);
+}
+
+/* marked */
+.state5 {
+  background-color: var(--cellMarkedColor);
 }

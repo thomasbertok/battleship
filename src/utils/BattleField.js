@@ -1,7 +1,7 @@
 const CELL_WATER = 0;
-const CELL_MISSED = 1;
 const CELL_SHIP = 2;
 const CELL_HIT = 3;
+const CELL_SUNK = 4;
 
 /**
  * Ship class with coords
@@ -9,6 +9,7 @@ const CELL_HIT = 3;
  */
 class Ship {
   constructor(coords) {
+    this.sunkenShip = false;
     this.coords = coords;
     console.log("> New ship added:", coords);
   }
@@ -20,6 +21,14 @@ class Ship {
         coord[2] = CELL_HIT;
       }
     });
+    this.sunkenShip = this.coords.every((coord) => coord[2] === CELL_HIT);
+  }
+
+  setSunk() {
+    this.coords.forEach((coord) => {
+      coord[2] = CELL_SUNK;
+    });
+    this.sunkenShip = true;
   }
 
   // check if coords are on ship
@@ -29,7 +38,7 @@ class Ship {
 
   // check if ship is sunk
   isSunk() {
-    return this.coords.every((coord) => coord[2] === CELL_HIT);
+    return this.sunkenShip;
   }
 }
 
@@ -70,8 +79,13 @@ class BattleField {
     this.addShip(5);
     this.addShip(4);
     this.addShip(4);
+
+    console.log("> Battlefield created.");
+    console.log(this.ocean);
   }
 
+  // create 2d array filling it with 0s
+  // helps working with frontend board
   createField() {
     console.log("> Creating battlefield...");
     this.ocean = Array.from({ length: this.cols }, () => Array(this.rows).fill(CELL_WATER));
@@ -106,10 +120,9 @@ class BattleField {
     // initialize ship properties
     let col = -1;
     let row = -1;
-    let isVertical = false;
     let tries = 0;
-
     let isValid = false;
+    let isVertical = false;
 
     // try creating new choords for the ship
     // until a valid position is found
@@ -138,8 +151,10 @@ class BattleField {
     // if we're good to add the new ship
     if (isValid) {
       console.log(`>> Coords OK: [${row + 1}, ${col + 1}]`);
+
       // init coordinates of the new ship
       let shipCoords = [];
+
       // add ship pieces to field
       // and gather ship coordinates
       for (let i = 0; i < len; i++) {
@@ -151,8 +166,10 @@ class BattleField {
           shipCoords.push([row, col + i, CELL_SHIP]);
         }
       }
-      // create new ship object
+
+      // create new ship object with coordinates
       const newShip = new Ship(shipCoords);
+
       // add ship object to fleet
       this.fleet.push(newShip);
     } else {
@@ -176,7 +193,6 @@ class BattleField {
   // update battlefield cell
   updateFieldCell(row, col, value) {
     this.ocean[row][col] = value;
-
     if (value === CELL_HIT) {
       this.fleet.forEach((ship) => {
         if (ship.isShip(row, col)) {

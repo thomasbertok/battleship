@@ -4,6 +4,8 @@
   --cellShipColor: DimGray;
   --cellHitColor: FireBrick;
   --cellMissColor: DarkBlue;
+  --cellShipSunkColor: Black;
+  --cellMarkedColor: Yellow;
 
   --theme-50: rgb(250 250 249);
   --theme-100: rgb(245 245 244);
