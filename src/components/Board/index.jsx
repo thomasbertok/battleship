@@ -1,17 +1,18 @@
+import React from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import Cell from "../Cell";
 import style from "./Board.module.css";
+import PropTypes from "prop-types";
 
 const Board = ({ battleField }) => {
   const [board, setBoardCell] = useAppStore(useShallow((state) => [state.board, state.setBoardCell]));
-
-  const { rows, cols } = battleField;
+  const { rows, cols } = battleField || {};
 
   /**
    * letters on the top of the table
    */
-  const renderLegendHorizontal = () => {
+  const renderLegendHorizontal = (cols) => {
     return Array.from({ length: cols }, (_, idx) => <div key={idx}>{String.fromCharCode(idx + 65)}</div>);
   };
 
@@ -52,6 +53,14 @@ const Board = ({ battleField }) => {
       <div className={style.message}></div>
     </div>
   );
+};
+
+Board.propTypes = {
+  battleField: PropTypes.shape({
+    rows: PropTypes.number,
+    cols: PropTypes.number,
+    // define the expected shape of the battleField prop
+  }),
 };
 
 export default Board;

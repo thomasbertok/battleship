@@ -15,3 +15,5 @@ stats.html
 .eslintcache
 
 .env
+
+__snapshots__

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./CoordsInput.module.css";

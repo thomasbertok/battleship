@@ -1,3 +1,4 @@
+import React from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Stats.module.css";

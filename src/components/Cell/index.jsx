@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/react/shallow";
 import styles from "./Cell.module.css";
+import PropTypes from "prop-types";
 
 const Cell = ({ row, col, onClick }) => {
   const [board, showShips] = useAppStore(useShallow((state) => [state.board, state.showShips]));
@@ -43,12 +44,18 @@ const Cell = ({ row, col, onClick }) => {
 
   return (
     <div
-      className={`${styles.cell} ${cellStateClass(row, col)} ${clickedState ? styles.clicked : ""}`}
+      className={`cell ${styles.cell} ${cellStateClass(row, col)} ${clickedState ? styles.clicked : ""}`}
       onClick={handleClick}>
       {String.fromCharCode(col + 65)}
       {row + 1}
     </div>
   );
+};
+
+Cell.propTypes = {
+  row: PropTypes.number.isRequired,
+  col: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Cell;

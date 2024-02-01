@@ -87,9 +87,9 @@ export const useAppStore = create((set) => ({
     }));
   },
 
-  allShipsDestroyed: () => {
-    return shipsRemaining === 0;
-  },
+  // allShipsDestroyed: () => {
+  //   return shipsRemaining === 0;
+  // },
 
   // toggle show ships
   toggleShowShips: () => set((state) => ({ showShips: !state.showShips })),
