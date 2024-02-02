@@ -4,12 +4,11 @@ import { useShallow } from "zustand/react/shallow";
 import styles from "./Stats.module.css";
 
 const Stats = () => {
-  const [hitCount, successfulHits, shipsRemaining, playerInput, showShips, toggleShowShips] = useAppStore(
+  const [hitCount, successfulHits, shipsRemaining, showShips, toggleShowShips] = useAppStore(
     useShallow((state) => [
       state.hitCount,
       state.successfulHits,
       state.shipsRemaining,
-      state.playerInput,
       state.showShips,
       state.toggleShowShips,
     ])
@@ -18,16 +17,26 @@ const Stats = () => {
   return (
     <div className={styles.stats}>
       <h3>Player Stats</h3>
-      <div>
-        <label htmlFor="show-ships" className={styles.label}>
-          <input type="checkbox" name="show-ships" id="show-ships" checked={showShips} onChange={toggleShowShips} />
-          <span>Show ships</span>
-        </label>
+
+      <div className={styles.statsList}>
+        <div>
+          <div>Hit count: </div>
+          <div>{hitCount}</div>
+        </div>
+        <div>
+          <div>Successful Hits:</div>
+          <div>{successfulHits}</div>
+        </div>
+        <div>
+          <div>Ships remaining:</div>
+          <div>{shipsRemaining}</div>
+        </div>
       </div>
-      <div>Hit count: {hitCount}</div>
-      <div>Successful Hits: {successfulHits}</div>
-      <div>Ships remaining: {shipsRemaining}</div>
-      <div>Input: {playerInput}</div>
+
+      <label htmlFor="show-ships" className={styles.label}>
+        <input type="checkbox" name="show-ships" id="show-ships" checked={showShips} onChange={toggleShowShips} />
+        <span>Show ships</span>
+      </label>
     </div>
   );
 };

@@ -14,7 +14,7 @@ describe("Dashboard", () => {
   });
 
   it("Board renders correctly", () => {
-    const board = render(<Board />);
+    const board = render(<Board battleField={{ rows: 10, cols: 10 }} />);
     expect(board).toBeDefined();
   });
 

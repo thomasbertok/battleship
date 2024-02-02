@@ -49,12 +49,9 @@ class Ship {
  *
  * fleet - array of ships objects
  *
- * createField        - creates 2d array
- * addShip            - adds ship
+ * createOcean        - creates 2d array
  * isValidPlacement   - checks if ship placement is valid
- * isFLeetSunk        - checks if all ships are sunk
- * getShipsRemaining  - returns number of ships not sunk
- * updateFieldCell    - updates field cell with new state
+ * addShip            - adds randomly placed ship with given size
  *
  * @param {number} width
  * @param {number} height
@@ -82,11 +79,10 @@ class BattleField {
     // this.addShip(3);
 
     console.log("> Battlefield ready <");
-    console.log(this.ocean);
+    // console.log(this.ocean);
   }
 
   // create 2d array filling it with 0s
-  // helps working with frontend board
   createOcean() {
     console.log("> Creating ocean...");
     this.ocean = Array.from({ length: this.cols }, () => Array(this.rows).fill(CELL_WATER));
@@ -176,35 +172,6 @@ class BattleField {
       console.log(`! Only invalid coords found. Tried ${tries} times.`);
     }
   }
-
-  // check if all ships are sunk
-  // isFleetSunk() {
-  //   return this.fleet.every((ship) => ship.isSunk());
-  // }
-
-  // getSunkenShips() {
-  //   return this.fleet.filter((ship) => ship.isSunk());
-  // }
-
-  // getShipsRemaining() {
-  //   return this.fleet.length - this.fleet.filter((ship) => ship.isSunk()).length;
-  // }
-
-  // update battlefield cell
-  // updateFieldCell(row, col, value) {
-  //   this.ocean[row][col] = value;
-  //   if (value === CELL_HIT) {
-  //     this.fleet.forEach((ship) => {
-  //       if (ship.isShip(row, col)) {
-  //         console.log("-- OH SHIP! --");
-  //         ship.setHit(row, col);
-  //         if (ship.isSunk()) {
-  //           console.log("-- SHIP SUNK! --");
-  //         }
-  //       }
-  //     });
-  //   }
-  // }
 }
 
 export default BattleField;

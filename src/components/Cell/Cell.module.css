@@ -19,7 +19,8 @@
   z-index: 100;
 }
 
-.clicked {
+.cell:not(.state0):active {
+  transform: scale(1.1);
 }
 
 /* water */
@@ -40,15 +41,10 @@
 /* ship hit */
 .state3 {
   background-color: var(--cellHitColor);
-  color: var(--theme-200);
+  color: var(--theme-100);
 }
 
-/* ship sunk */
 .state4 {
-  background-color: var(--cellShipSunkColor);
-}
-
-/* marked */
-.state5 {
-  background-color: var(--cellMarkedColor);
+  background-color: var(--theme-900);
+  color: var(--theme-100);
 }
