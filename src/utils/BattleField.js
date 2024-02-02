@@ -84,7 +84,7 @@ class BattleField {
 
   // create 2d array filling it with 0s
   createOcean() {
-    console.log("> Creating ocean...");
+    console.log("> Creating ocean <");
     this.ocean = Array.from({ length: this.cols }, () => Array(this.rows).fill(CELL_WATER));
   }
 

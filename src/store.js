@@ -66,8 +66,8 @@ export const useAppStore = create((set) => ({
       fleet: state.fleet.map((ship) => {
         // if we hit a ship
         if (ship.isShip(x, y)) {
-          console.log("-- OH SHIP! --");
           ship.setHit(x, y);
+          console.log("-- OH SHIP! --");
 
           // if the ship is sunk by this hit
           if (ship.isSunk()) {
