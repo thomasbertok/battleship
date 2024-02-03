@@ -4,7 +4,7 @@ install: `npm install`\
 run: `npm run dev`\
 lint: `npm run lint`\
 test: `npm run test`\
-\
+
 ## Challenge
 > The challenge is to program a simple version of the game Battleships. Create an application to allow a single human player to play a one-sided game of Battleships against ships placed by the computer.
 
@@ -43,6 +43,7 @@ form with text input and button to launch\
 \
 Winner:\
 simple component to show some congratulations at the certain end. \
+\
 \
 Battlefield creation happens in utils/Battlefield.js, then it's given to state on dashboard load. \
 Styling is done via React CSS modules.\World exists until page reload.
